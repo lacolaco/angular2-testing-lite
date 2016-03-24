@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "declaration": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "!**/*.d.ts",
+        "!test/**/*.ts",
+        "!node_modules/**/*.*",
+        "node_modules/typescript/lib/lib.es6.d.ts"
+    ],
+    "files": [
+        "core.ts",
+        "framework/mocha.ts",
+        "src/core/directive_resolver_mock.ts",
+        "src/core/lang.ts",
+        "src/core/test_component_builder.ts",
+        "src/core/test_injector.ts",
+        "src/frameworks/mocha/inject.ts",
+        "node_modules/typescript/lib/lib.es6.d.ts"
+    ]
+}

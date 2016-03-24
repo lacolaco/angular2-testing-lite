@@ -1,0 +1,10 @@
+.idea/
+node_modules/
+test/
+typings/
+
+**/*.ts
+!**/*.d.ts
+
+dtsm.json
+karma.conf.js
