@@ -14,6 +14,9 @@
     "prebuild:test": "npm run tsconfig:test",
     "espower": "espower test/bundle.spec.js > test/bundle.spec.espowered.js"
   },
+  "repository": {
+    "url": "https://github.com/laco0416/angular2-testing-micro"
+  },
   "keywords": ["angular2", "testing"],
   "author": "Suguru Inatomi <laco0416@gmail.com>",
   "license": "MIT",
