@@ -1,10 +1,12 @@
 # angular2-testing-micro
+[![Circle CI](https://circleci.com/gh/laco0416/angular2-testing-micro/tree/master.svg?style=svg)](https://circleci.com/gh/laco0416/angular2-testing-micro/tree/master)
+[![npm version](https://badge.fury.io/js/angular2-testing-micro.svg)](https://badge.fury.io/js/angular2-testing-micro)
 
 Jasmine-free Angular 2 Testing Library
 
 ## Why micro?
 `angular2/testing` depends on Jasmine and wraps it for DI.
-I need _Jasmine-free_ testing library for Angular2 because I want ;
+I need _Jasmine-free_ testing library for Angular2 because I want ...
 
 - Simple API
 - Less code

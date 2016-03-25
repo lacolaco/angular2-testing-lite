@@ -1,3 +1,11 @@
 machine:
   node:
     version: 5
+
+## Customize dependencies
+dependencies:
+  pre:
+    - npm install -g dtsm
+  override:
+     - dtsm --insight false install
+     - npm install

@@ -1,3 +1,7 @@
+"use strict";
+
+// es6 shim
+import "core-js/shim";
 
 // ng2 deps
 import "reflect-metadata";
