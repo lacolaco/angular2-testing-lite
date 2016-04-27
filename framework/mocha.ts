@@ -1,3 +1,3 @@
 export {
     inject
-} from "../src/frameworks/mocha/inject";
+} from "../src/framework/mocha/inject";

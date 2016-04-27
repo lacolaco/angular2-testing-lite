@@ -3,14 +3,14 @@
  * Original: [https://github.com/angular/angular/blob/master/modules/angular2/src/testing/test_injector.ts]
  */
 
-import {Injector, Provider, PLATFORM_INITIALIZER, DirectiveResolver, provide} from "angular2/core";
+import {ReflectiveInjector, Provider, PLATFORM_INITIALIZER, Type} from "angular2/core";
+import {DirectiveResolver} from 'angular2/compiler';
 import {TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS} from "angular2/platform/testing/browser";
-import {Type} from "./lang";
 import {MockDirectiveResolver} from "./directive_resolver_mock";
 import {TestComponentBuilder} from "./test_component_builder";
 
 export class TestInjector {
-    private _injector: Injector;
+    private _injector: ReflectiveInjector;
     private _instantiated: boolean;
     private _providers: Array<Type | Provider | any[]> = [];
 
@@ -24,8 +24,8 @@ export class TestInjector {
         this._instantiated = false;
     }
 
-    createInjector(): Injector {
-        var rootInjector = Injector.resolveAndCreate(this.platformProviders);
+    createInjector(): ReflectiveInjector {
+        var rootInjector = ReflectiveInjector.resolveAndCreate(this.platformProviders);
         this._injector = rootInjector.resolveAndCreateChild(this.applicationProviders.concat(this._providers));
         this._instantiated = true;
         return this._injector;
@@ -71,7 +71,7 @@ export function setBaseTestProviders(platformProviders: Array<Type | Provider | 
   testInjector.platformProviders = platformProviders;
   testInjector.applicationProviders = applicationProviders;
   var injector = testInjector.createInjector();
-  let inits: Function[] = injector.getOptional(PLATFORM_INITIALIZER);
+  let inits: Function[] = injector.get(PLATFORM_INITIALIZER, null);
   if (inits) {
     inits.forEach(init => init());
   }
@@ -82,7 +82,7 @@ export function setupTestBrowserProviders() {
     setBaseTestProviders(TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS);
     getTestInjector().addProviders([
         TestComponentBuilder,
-        provide(DirectiveResolver, {useClass: MockDirectiveResolver})
+        new Provider(DirectiveResolver, {useClass: MockDirectiveResolver})
     ]);
 }
 
@@ -97,7 +97,7 @@ export class FunctionWithParamTokens {
     constructor(private _tokens: any[], private _fn: Function, public additionalProviders: Array<Type | Provider | any[]> = []) {
     }
 
-    execute(injector: Injector): any {
+    execute(injector: ReflectiveInjector): any {
         const params = this._tokens.map(t => injector.get(t));
         return this._fn.apply(null, params);
     }

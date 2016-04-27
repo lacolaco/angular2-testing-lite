@@ -28,10 +28,9 @@
         "common/services/test.service.spec.ts",
         "index.spec.ts",
         "../src/core/directive_resolver_mock.ts",
-        "../src/core/lang.ts",
         "../src/core/test_component_builder.ts",
         "../src/core/test_injector.ts",
-        "../src/frameworks/mocha/inject.ts",
+        "../src/framework/mocha/inject.ts",
         "../typings/mocha/mocha.d.ts",
         "../typings/power-assert/power-assert.d.ts",
         "../node_modules/typescript/lib/lib.es6.d.ts"

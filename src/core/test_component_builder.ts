@@ -4,47 +4,50 @@
  */
 
 import {
-    Injectable, Injector, DirectiveResolver, ComponentRef, DynamicComponentLoader, ElementRef, ChangeDetectorRef
+    Injectable, Injector, ComponentRef, DynamicComponentLoader, ElementRef, ChangeDetectorRef, Type
 } from "angular2/core";
+import {DebugElement, getDebugNode} from "angular2/src/core/debug/debug_node";
+import {DirectiveResolver} from "angular2/compiler";
 import {DOCUMENT} from "angular2/platform/browser";
-import {Type} from "./lang";
 import {MockDirectiveResolver} from "./directive_resolver_mock";
 
-export abstract class ComponentFixture {
-  componentInstance: any;
+export class ComponentFixture {
 
-  nativeElement: any;
+    debugElement: DebugElement;
 
-  elementRef: ElementRef;
+    componentInstance: any;
 
-  abstract detectChanges(): void;
+    nativeElement: any;
 
-  abstract destroy(): void;
-}
+    elementRef: ElementRef;
 
-export class ComponentFixture_ extends ComponentFixture {
-  _componentRef: ComponentRef;
-  _componentParentView: {
-      changeDetector: ChangeDetectorRef;
-      appElements: any[];
-      rootNodesOrAppElements: any[];
-  };
+    componentRef: ComponentRef;
 
-  constructor(componentRef: ComponentRef) {
-    super();
-    this._componentParentView = (componentRef.hostView as any).internalView;
-    this.elementRef = this._componentParentView.appElements[0].ref;
-    this.componentInstance = componentRef.instance;
-    this.nativeElement = componentRef.location.nativeElement;
-    this._componentRef = componentRef;
-  }
+    changeDetectorRef: ChangeDetectorRef;
 
-  detectChanges(): void {
-    this._componentParentView.changeDetector.detectChanges();
-    this._componentParentView.changeDetector.checkNoChanges();
-  }
+    constructor(componentRef: ComponentRef) {
+        this.changeDetectorRef = componentRef.changeDetectorRef;
+        this.elementRef = componentRef.location;
+        this.debugElement = <DebugElement>getDebugNode(this.elementRef.nativeElement);
+        this.componentInstance = componentRef.instance;
+        this.nativeElement = this.elementRef.nativeElement;
+        this.componentRef = componentRef;
+    }
+    
+    detectChanges(checkNoChanges: boolean = true): void {
+        this.changeDetectorRef.detectChanges();
+        if (checkNoChanges) {
+            this.checkNoChanges();
+        }
+    }
 
-  destroy(): void { this._componentRef.dispose(); }
+    checkNoChanges(): void {
+        this.changeDetectorRef.checkNoChanges();
+    }
+    
+    destroy(): void {
+        this.componentRef.destroy();
+    }
 }
 
 @Injectable()
@@ -62,7 +65,7 @@ export class TestComponentBuilder {
 
         const rootElId = `root${TestComponentBuilder._nextRootElementID++}`;
         const doc = this._injector.get(DOCUMENT) as Document;
-        var oldRoots = doc.body.querySelectorAll('[id^=root]');
+        var oldRoots = doc.body.querySelectorAll("[id^=root]");
         for (var i = 0; i < oldRoots.length; i++) {
             doc.body.removeChild(oldRoots[i]);
         }
@@ -71,6 +74,6 @@ export class TestComponentBuilder {
         doc.body.appendChild(rootEl);
         const loader = this._injector.get(DynamicComponentLoader) as DynamicComponentLoader;
         return loader.loadAsRoot(rootComponentType, `#${rootElId}`, this._injector)
-            .then(cmpRef => new ComponentFixture_(cmpRef));
+            .then(cmpRef => new ComponentFixture(cmpRef));
     }
 }
