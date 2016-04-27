@@ -15,7 +15,7 @@ I need _Jasmine-free_ testing library for Angular2 because I want ...
 ## Install
 
 ```
-$ npm install --save-dev angualr2-testing-micro
+$ npm install --save-dev angular2-testing-micro
 ```
 
 ## Usage ([Mocha](https://github.com/mochajs/mocha) & [power-assert](https:://github.com/power-assert-js/power-assert) example)
