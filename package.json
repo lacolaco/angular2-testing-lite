@@ -1,5 +1,5 @@
 {
-  "name": "angular2-testing-micro",
+  "name": "angular2-testing-lite",
   "version": "1.3.0",
   "description": "Jasmine-free Angular 2 Testing Library",
   "scripts": {
@@ -15,7 +15,7 @@
     "espower": "espower test/bundle.spec.js > test/bundle.spec.espowered.js"
   },
   "repository": {
-    "url": "https://github.com/laco0416/angular2-testing-micro"
+    "url": "https://github.com/laco0416/angular2-testing-lite"
   },
   "keywords": [
     "angular2",

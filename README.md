@@ -1,21 +1,20 @@
-# angular2-testing-micro
-[![Circle CI](https://circleci.com/gh/laco0416/angular2-testing-micro/tree/master.svg?style=svg)](https://circleci.com/gh/laco0416/angular2-testing-micro/tree/master)
-[![npm version](https://badge.fury.io/js/angular2-testing-micro.svg)](https://badge.fury.io/js/angular2-testing-micro)
+# angular2-testing-lite
+[![Circle CI](https://circleci.com/gh/laco0416/angular2-testing-lite/tree/master.svg?style=svg)](https://circleci.com/gh/laco0416/angular2-testing-lite/tree/master)
+[![npm version](https://badge.fury.io/js/angular2-testing-lite.svg)](https://badge.fury.io/js/angular2-testing-lite)
 
 Jasmine-free Angular 2 Testing Library
 
-## Why micro?
-`angular2/testing` depends on Jasmine and wraps it for DI.
-I need _Jasmine-free_ testing library for Angular2 because I want ...
+## Features
 
-- Simple API
-- Less code
-- Custom assertion (I ♥ [power-assert](https:://github.com/power-assert-js/power-assert))
+- **Jasmine-free**
+- Same core API as `angular2/testing`
+- Less API: supports only `TestInjector` and `TestComponentBuilder`
+- Opt-in utilities for [Mocha](https://github.com/mochajs/mocha)
 
 ## Install
 
 ```
-$ npm install --save-dev angular2-testing-micro
+$ npm install --save-dev angular2-testing-lite
 ```
 
 ## Usage ([Mocha](https://github.com/mochajs/mocha) & [power-assert](https:://github.com/power-assert-js/power-assert) example)
@@ -49,8 +48,8 @@ Inject `Http`
 
 ```ts
 import assert = require("power-assert");
-import {async, inject} from "angular2-testing-micro/core";
-import {it, describe, xdescribe, beforeEach, beforeEachProviders} from "angular2-testing-micro/mocha";
+import {async, inject} from "angular2-testing-lite/core";
+import {it, describe, xdescribe, beforeEach, beforeEachProviders} from "angular2-testing-lite/mocha";
 
 describe("TestService", () => {
 
@@ -75,8 +74,9 @@ describe("TestService", () => {
 Ported `TestComponentBuilder`
 
 ```ts
-import {inject, async, TestComponentBuilder} from "angular2-testing-micro/core";
-import {describe, it, xit, beforeEachProviders, beforeEach} from "angular2-testing-micro/mocha";
+import assert = require("power-assert");
+import {inject, async, TestComponentBuilder} from "angular2-testing-lite/core";
+import {describe, it, xit, beforeEachProviders, beforeEach} from "angular2-testing-lite/mocha";
 import {HTTP_PROVIDERS} from "angular2/http";
 
 describe("TestAppComponent", () => {
