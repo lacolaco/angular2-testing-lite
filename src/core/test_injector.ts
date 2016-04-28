@@ -87,8 +87,9 @@ export function setBaseTestProviders(platformProviders: Array<Type | Provider | 
     testInjector.reset();
 }
 
-export function setupTestBrowserProviders() {
-    setBaseTestProviders(TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS);
+export function setupTestBrowserProviders(bootstrapProviders?:Array<Type | Provider | any[]>) {
+    setBaseTestProviders(TEST_BROWSER_PLATFORM_PROVIDERS.concat(bootstrapProviders), 
+        TEST_BROWSER_APPLICATION_PROVIDERS);
 }
 
 export function resetBaseTestProviders() {
