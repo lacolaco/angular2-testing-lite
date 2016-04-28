@@ -1,6 +1,6 @@
 {
   "name": "angular2-testing-micro",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Jasmine-free Angular 2 Testing Library",
   "scripts": {
     "prepublish": "npm run build:lib",
