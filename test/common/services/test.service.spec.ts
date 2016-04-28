@@ -21,31 +21,28 @@ export class TestService {
  */
 
 import assert = require("power-assert");
-import {resetBaseTestProviders, getTestInjector} from "../../../core";
-import {inject} from "../../../framework/mocha";
+import {async, inject} from "../../../core";
+import {it, describe, xdescribe, beforeEach, beforeEachProviders} from "../../../mocha";
 
 describe("TestService", () => {
 
-    beforeEach(() => {
-        resetBaseTestProviders();
-        getTestInjector().addProviders([
-            BaseRequestOptions,
-            MockBackend,
-            provide(Http, {
-                useFactory: (backend: MockBackend, options: BaseRequestOptions) => {
-                    return new Http(backend, options);
-                }, deps: [MockBackend, BaseRequestOptions]
-            }),
-            TestService
-        ]);
-    });
+    beforeEachProviders(() => [
+        BaseRequestOptions,
+        MockBackend,
+        provide(Http, {
+            useFactory: (backend: MockBackend, options: BaseRequestOptions) => {
+                return new Http(backend, options);
+            }, deps: [MockBackend, BaseRequestOptions]
+        }),
+        TestService
+    ]);
 
     it("can instantiate", inject([TestService], (service: TestService) => {
         assert(!!service);
     }));
 
     describe("get(id)", () => {
-        
+
         beforeEach(inject([MockBackend], (backend: MockBackend) => {
             backend.connections.subscribe((c: MockConnection) => {
                 let resp = new TestModel("mocked!");
@@ -58,15 +55,14 @@ describe("TestService", () => {
             });
         }));
 
-        it("should return mocked TestModel", inject([TestService], (service: TestService) => {
-            return service.get("test").toPromise()
-                .then(resp => {
-                    assert(!!resp);
-                    assert(resp.text === "mocked!");
-                })
-                .catch(error => {
-                    assert(!error);
-                });
-        }));
+        it("should return mocked TestModel", async(inject([TestService],
+            (service: TestService) => {
+                return service.get("test").toPromise()
+                    .then(resp => {
+                        assert(!!resp);
+                        assert(resp.text === "mocked!");
+                    });
+            })
+        ));
     });
 });

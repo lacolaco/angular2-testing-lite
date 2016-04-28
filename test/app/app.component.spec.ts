@@ -1,5 +1,4 @@
 import {Component, provide} from "angular2/core";
-import {Observable} from "rxjs/Observable";
 import {TestService} from "../common/services/test.service.spec";
 import {TestModel} from "../common/models/test.model.spec";
 
@@ -31,65 +30,52 @@ export class TestAppComponent {
  */
 
 import assert = require("power-assert");
-import {
-    TestComponentBuilder,
-    resetBaseTestProviders,
-    setupTestBrowserProviders,
-} from "../../core";
-import {inject} from "../../framework/mocha";
+import {inject, async, TestComponentBuilder} from "../../core";
+import {describe, it, xit, beforeEachProviders, beforeEach} from "../../mocha";
+import {By} from "angular2/platform/browser";
+import {HTTP_PROVIDERS} from "angular2/http";
 
 describe("TestAppComponent", () => {
 
+    let mockModel: TestModel;
+    beforeEachProviders(() => [
+        HTTP_PROVIDERS,
+        TestService,
+    ]);
+    
     beforeEach(() => {
-        resetBaseTestProviders();
-        setupTestBrowserProviders();
+        mockModel = new TestModel("id");
     });
 
-    it("can create", inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-        return tcb.createAsync(TestAppComponent, [
-                provide(TestService, {
-                    useValue: {
-                        get: (id: string) => {
-                            return Observable.empty();
-                        }
-                    },
-                }),
-            ])
-            .then(fixture => {
-                assert(!!fixture);
+    it("can create", async(inject([TestComponentBuilder],
+        (tcb: TestComponentBuilder) => {
+            return tcb.createAsync(TestAppComponent)
+                .then(fixture => {
+                    assert(!!fixture);
+                });
+        })
+    ));
+
+    it("should has text: 'Test App'", async(inject([TestComponentBuilder],
+        (tcb: TestComponentBuilder) => {
+            return tcb.createAsync(TestAppComponent)
+                .then(fixture => {
+                    let el = fixture.debugElement;
+                    assert(el.query(By.css("h1")).nativeElement.innerHTML === "Test App");
+                });
+        })
+    ));
+
+    it("should has text: 'Test App'", async(inject([TestComponentBuilder],
+        (tcb: TestComponentBuilder) => {
+            return tcb.createAsync(TestAppComponent).then(fixture => {
+                let el = fixture.debugElement;
+                assert(el.query(By.css("p")).nativeElement.innerHTML === "");
+                let cmp = fixture.componentInstance as TestAppComponent;
+                cmp.model = mockModel;
+                fixture.detectChanges();
+                assert(el.query(By.css("p")).nativeElement.innerHTML === mockModel.toString());
             });
-    }));
-
-    it("should has text: 'Test App'", inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-        return tcb.createAsync(TestAppComponent, [
-            provide(TestService, {
-                useValue: {
-                    get: (id: string) => {
-                        return Observable.empty();
-                    }
-                },
-            }),
-        ]).then(fixture => {
-            let el = fixture.nativeElement as HTMLElement;
-            assert(!!el);
-            assert(el.querySelector("h1").innerHTML === "Test App");
-        });
-    }));
-
-    it("should has text: 'Test App'", inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-        const mockModel = new TestModel("id");
-        return tcb.createAsync(TestAppComponent, [
-            provide(TestService, {
-                useValue: {
-                    get: (id: string) => {
-                        return Observable.of(mockModel);
-                    }
-                },
-            }),
-        ]).then(fixture => {
-            assert(fixture.nativeElement.querySelector("p").innerHTML === "");
-            fixture.detectChanges();
-            assert(fixture.nativeElement.querySelector("p").innerHTML === mockModel.toString());
-        });
-    }));
+        })
+    ));
 });

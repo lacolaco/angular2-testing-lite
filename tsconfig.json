@@ -17,11 +17,10 @@
     ],
     "files": [
         "core.ts",
-        "framework/mocha.ts",
-        "src/core/directive_resolver_mock.ts",
+        "mocha.ts",
         "src/core/test_component_builder.ts",
         "src/core/test_injector.ts",
-        "src/framework/mocha/inject.ts",
+        "src/mocha/testing.ts",
         "node_modules/typescript/lib/lib.es6.d.ts"
     ]
 }
