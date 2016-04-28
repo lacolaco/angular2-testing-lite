@@ -19,7 +19,6 @@
         "core.ts",
         "framework/mocha.ts",
         "src/core/directive_resolver_mock.ts",
-        "src/core/lang.ts",
         "src/core/test_component_builder.ts",
         "src/core/test_injector.ts",
         "src/framework/mocha/inject.ts",

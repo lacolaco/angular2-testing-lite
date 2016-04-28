@@ -5,9 +5,18 @@
 
 import {ReflectiveInjector, Provider, PLATFORM_INITIALIZER, Type} from "angular2/core";
 import {DirectiveResolver} from 'angular2/compiler';
-import {TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS} from "angular2/platform/testing/browser";
+import {
+    TEST_BROWSER_PLATFORM_PROVIDERS as _PLATFORM,
+    TEST_BROWSER_APPLICATION_PROVIDERS as _APPLICATION
+} from "angular2/platform/testing/browser";
 import {MockDirectiveResolver} from "./directive_resolver_mock";
 import {TestComponentBuilder} from "./test_component_builder";
+
+export const TEST_BROWSER_PLATFORM_PROVIDERS = _PLATFORM;
+export const TEST_BROWSER_APPLICATION_PROVIDERS = _APPLICATION.concat([
+    TestComponentBuilder,
+    new Provider(DirectiveResolver, {useClass: MockDirectiveResolver})
+]);
 
 export class TestInjector {
     private _injector: ReflectiveInjector;
@@ -64,26 +73,22 @@ export function getTestInjector() {
 
 export function setBaseTestProviders(platformProviders: Array<Type | Provider | any[]>,
                                      applicationProviders: Array<Type | Provider | any[]>) {
-  var testInjector = getTestInjector();
-  if (testInjector.platformProviders.length > 0 || testInjector.applicationProviders.length > 0) {
-    throw 'Cannot set base providers because it has already been called';
-  }
-  testInjector.platformProviders = platformProviders;
-  testInjector.applicationProviders = applicationProviders;
-  var injector = testInjector.createInjector();
-  let inits: Function[] = injector.get(PLATFORM_INITIALIZER, null);
-  if (inits) {
-    inits.forEach(init => init());
-  }
-  testInjector.reset();
+    var testInjector = getTestInjector();
+    if (testInjector.platformProviders.length > 0 || testInjector.applicationProviders.length > 0) {
+        throw 'Cannot set base providers because it has already been called';
+    }
+    testInjector.platformProviders = platformProviders;
+    testInjector.applicationProviders = applicationProviders;
+    var injector = testInjector.createInjector();
+    let inits: Function[] = injector.get(PLATFORM_INITIALIZER, null);
+    if (inits) {
+        inits.forEach(init => init());
+    }
+    testInjector.reset();
 }
 
 export function setupTestBrowserProviders() {
     setBaseTestProviders(TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS);
-    getTestInjector().addProviders([
-        TestComponentBuilder,
-        new Provider(DirectiveResolver, {useClass: MockDirectiveResolver})
-    ]);
 }
 
 export function resetBaseTestProviders() {
