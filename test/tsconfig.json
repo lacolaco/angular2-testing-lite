@@ -16,6 +16,7 @@
         "!**/*.d.ts",
         "../src/**/*.ts",
         "!../src/**/*.d.ts",
+        "../node_modules/zone.js/dist/zone.js.d.ts",
         "../typings/mocha/mocha.d.ts",
         "../typings/power-assert/power-assert.d.ts",
         "../node_modules/typescript/lib/lib.es6.d.ts"
@@ -29,6 +30,7 @@
         "../src/core/test_component_builder.ts",
         "../src/core/test_injector.ts",
         "../src/mocha/testing.ts",
+        "../node_modules/zone.js/dist/zone.js.d.ts",
         "../typings/mocha/mocha.d.ts",
         "../typings/power-assert/power-assert.d.ts",
         "../node_modules/typescript/lib/lib.es6.d.ts"

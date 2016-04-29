@@ -31,51 +31,50 @@ export class TestAppComponent {
 
 import assert = require("power-assert");
 import {inject, async, TestComponentBuilder} from "../../core";
-import {describe, it, xit, beforeEachProviders, beforeEach} from "../../mocha";
+import {describe, it, xit, beforeEach} from "../../mocha";
 import {By} from "angular2/platform/browser";
-import {HTTP_PROVIDERS} from "angular2/http";
+import {Observable} from "rxjs/Observable";
+
+class MockTestService {
+
+    get(id: string): Observable<TestModel> {
+        return Observable.of(new TestModel(id));
+    }
+}
 
 describe("TestAppComponent", () => {
+    let builder: TestComponentBuilder;
 
-    let mockModel: TestModel;
-    beforeEachProviders(() => [
-        HTTP_PROVIDERS,
-        TestService,
-    ]);
-    
-    beforeEach(() => {
-        mockModel = new TestModel("id");
-    });
+    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+        builder = tcb.overrideProviders(TestAppComponent, [
+            provide(TestService, {useClass: MockTestService})
+        ]);
+    }));
 
-    it("can create", async(inject([TestComponentBuilder],
-        (tcb: TestComponentBuilder) => {
-            return tcb.createAsync(TestAppComponent)
+    it("can create", async(() => {
+            return builder.createAsync(TestAppComponent)
                 .then(fixture => {
                     assert(!!fixture);
                 });
         })
-    ));
+    );
 
-    it("should has text: 'Test App'", async(inject([TestComponentBuilder],
-        (tcb: TestComponentBuilder) => {
-            return tcb.createAsync(TestAppComponent)
+    it("should has text: 'Test App'", async(() => {
+            return builder.createAsync(TestAppComponent)
                 .then(fixture => {
                     let el = fixture.debugElement;
                     assert(el.query(By.css("h1")).nativeElement.innerHTML === "Test App");
                 });
         })
-    ));
+    );
 
-    it("should has text: 'Test App'", async(inject([TestComponentBuilder],
-        (tcb: TestComponentBuilder) => {
-            return tcb.createAsync(TestAppComponent).then(fixture => {
+    it("should has text: 'Test App'", async(() => {
+            return builder.createAsync(TestAppComponent).then(fixture => {
                 let el = fixture.debugElement;
                 assert(el.query(By.css("p")).nativeElement.innerHTML === "");
-                let cmp = fixture.componentInstance as TestAppComponent;
-                cmp.model = mockModel;
                 fixture.detectChanges();
-                assert(el.query(By.css("p")).nativeElement.innerHTML === mockModel.toString());
+                assert(el.query(By.css("p")).nativeElement.innerHTML !== "");
             });
         })
-    ));
+    );
 });

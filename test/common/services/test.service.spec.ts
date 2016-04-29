@@ -1,6 +1,5 @@
 import {Injectable, provide} from "angular2/core";
 import {Http, BaseRequestOptions, Response, ResponseOptions} from "angular2/http";
-import {MockBackend, MockConnection} from "angular2/http/testing";
 import {TestModel} from "../models/test.model.spec";
 import {Observable} from "rxjs/Observable";
 
@@ -21,6 +20,7 @@ export class TestService {
  */
 
 import assert = require("power-assert");
+import {MockBackend, MockConnection} from "angular2/http/testing";
 import {async, inject} from "../../../core";
 import {it, describe, xdescribe, beforeEach, beforeEachProviders} from "../../../mocha";
 
