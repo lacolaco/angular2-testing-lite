@@ -1,3 +1,13 @@
+<a name="1.3.4"></a>
+## [1.3.4](https://github.com/laco0416/angular2-testing-lite/compare/v1.3.3...v1.3.4) (2016-04-29)
+
+
+### Features
+
+* **core:** provide zone-patched async([585dd2e](https://github.com/laco0416/angular2-testing-lite/commit/585dd2e))
+
+
+
 <a name="1.3.3"></a>
 ## [1.3.3](https://github.com/laco0416/angular2-testing-lite/compare/v1.3.2...v1.3.3) (2016-04-29)
 
