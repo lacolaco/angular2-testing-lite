@@ -10,8 +10,8 @@
     "filesGlob": [
         "../core.ts",
         "!../core.d.ts",
-        "../framework/**/*.ts",
-        "!../framework/**/*.d.ts",
+        "../mocha.ts",
+        "!../mocha.d.ts",
         "**/*.ts",
         "!**/*.d.ts",
         "../src/**/*.ts",
@@ -23,6 +23,7 @@
     ],
     "files": [
         "../core.ts",
+        "../mocha.ts",
         "app/app.component.spec.ts",
         "common/models/test.model.spec.ts",
         "common/services/test.service.spec.ts",

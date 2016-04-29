@@ -1,10 +1,10 @@
 /**
  * testing utilities for Mocha
- * Original: https://github.com/angular/angular/blob/2.0.0-beta.16/modules/angular2/src/testing/testing.ts
+ * Original: https://github.com/angular/angular/blob/master/modules/angular2/src/testing/testing.ts
  */
 
-import {global} from "angular2/src/facade/lang";
-import {FunctionWithParamTokens, getTestInjector} from "../core/test_injector";
+import {global, isPromise} from "angular2/src/facade/lang";
+import {getTestInjector, TestInjector} from "../core/test_injector";
 
 const _global = <any>(typeof window === "undefined" ? global : window);
 
@@ -37,27 +37,11 @@ export const describe: Function = _global.describe;
  */
 export const xdescribe: Function = _global.xdescribe;
 
-/**
- * Signature for a synchronous test function (no arguments).
- */
-export type SyncTestFn = () => void;
-
-/**
- * Signature for an asynchronous test function which takes a
- * `done` callback.
- */
-export type AsyncTestFn = (done: () => void) => void;
-
-/**
- * Signature for any simple testing function.
- */
-export type AnyTestFn = SyncTestFn | AsyncTestFn | Function;
-
 const mochaBeforeEach: (action: (done?: MochaDone) => void) => void = _global.beforeEach;
 const mochaIt: Mocha.ITestDefinition = _global.it;
 const mochaXIt: Mocha.ITestDefinition = _global.xit;
 
-const testInjector = getTestInjector();
+const testInjector: TestInjector = getTestInjector();
 
 // Reset the test providers before each test
 mochaBeforeEach(() => {
@@ -90,47 +74,44 @@ export function beforeEachProviders(fn: () => any[]): void {
     });
 }
 
-function runInAsyncTestZone(fnToExecute: Function, finishCallback: Function, failCallback: Function,
-                            testName = ""): any {
-    const AsyncTestZoneSpec = (<any>Zone)["AsyncTestZoneSpec"];
-    const testZoneSpec = new AsyncTestZoneSpec(finishCallback, failCallback, testName);
-    testZoneSpec.onHandleError = (parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any) => {
-        const result = parentZoneDelegate.handleError(targetZone, error);
-        if (result) {
-            testZoneSpec._failCallback(error);
-            testZoneSpec._alreadyErrored = true;
-            return true;
-        }
-        return false;
-    };
-    const testZone = Zone.current.fork(testZoneSpec);
-    return testZone.runGuarded(fnToExecute);
-}
-
-function _it(mochaFn: Function, name: string, testFn: FunctionWithParamTokens | AnyTestFn): void {
-    if (testFn instanceof FunctionWithParamTokens) {
-        let testFnT = testFn;
-        if (testFnT.isAsync) {
-            mochaFn(name, (done: MochaDone) => {
-                runInAsyncTestZone(() => testInjector.execute(testFnT), () =>done(), done, name);
-            });
-        } else {
-            mochaFn(name, () => {
-                return testInjector.execute(testFnT);
-            });
-        }
+function _wrapTestFn(fn: Function) {
+  // Wraps a test or beforeEach function to handle synchronous and asynchronous execution.
+  return (done: MochaDone) => {
+    if (fn.length === 0) {
+      let retVal = fn();
+      if (isPromise(retVal)) {
+        // Asynchronous test function - wait for completion.
+        (<Promise<any>>retVal).then(() => done(), done);
+      } else {
+        // Synchronous test function - complete immediately.
+        done();
+      }
     } else {
-        // The test case doesn't use inject(). ie `it('test', (done) => { ... }));`
-        if ((<any>testFn).length === 0) {
-            mochaFn(name, () => {
-                return (<SyncTestFn>testFn)();
-            });
-        } else {
-            mochaFn(name, (done: MochaDone) => {
-                (<AsyncTestFn>testFn)(done);
-            });
-        }
+      // Asynchronous test function that takes "done" as parameter.
+      fn(done);
     }
+  };
+}
+//
+// function runInAsyncTestZone(fnToExecute: Function, finishCallback: Function, failCallback: Function,
+//                             testName = ""): any {
+//     const AsyncTestZoneSpec = (<any>Zone)["AsyncTestZoneSpec"];
+//     const testZoneSpec = new AsyncTestZoneSpec(finishCallback, failCallback, testName);
+//     testZoneSpec.onHandleError = (parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any) => {
+//         const result = parentZoneDelegate.handleError(targetZone, error);
+//         if (result) {
+//             testZoneSpec._failCallback(error);
+//             testZoneSpec._alreadyErrored = true;
+//             return true;
+//         }
+//         return false;
+//     };
+//     const testZone = Zone.current.fork(testZoneSpec);
+//     return testZone.runGuarded(fnToExecute);
+// }
+
+function _it(mochaFn: Function, name: string, testFn: Function): void {
+    mochaFn(name, _wrapTestFn(testFn));
 }
 
 /**
@@ -138,32 +119,8 @@ function _it(mochaFn: Function, name: string, testFn: FunctionWithParamTokens | 
  *
  * beforeEach may be used with the `inject` function to fetch dependencies.
  */
-export function beforeEach(fn: FunctionWithParamTokens | AnyTestFn): void {
-    if (fn instanceof FunctionWithParamTokens) {
-        // The test case uses inject(). ie `beforeEach(inject([ClassA], (a) => { ...
-        // }));`
-        let fnT = fn;
-        if (fnT.isAsync) {
-            mochaBeforeEach((done: MochaDone) => {
-                runInAsyncTestZone(() => testInjector.execute(fnT), () =>done(), done, "beforeEach");
-            });
-        } else {
-            mochaBeforeEach(() => {
-                return testInjector.execute(fnT);
-            });
-        }
-    } else {
-        // The test case doesn't use inject(). ie `beforeEach((done) => { ... }));`
-        if ((<any>fn).length === 0) {
-            mochaBeforeEach(() => {
-                (<SyncTestFn>fn)();
-            });
-        } else {
-            mochaBeforeEach((done) => {
-                (<AsyncTestFn>fn)(done);
-            });
-        }
-    }
+export function beforeEach(fn: Function): void {
+    mochaBeforeEach(_wrapTestFn(fn));
 }
 
 /**
@@ -172,9 +129,9 @@ export function beforeEach(fn: FunctionWithParamTokens | AnyTestFn): void {
  * The test function can be either a synchronous function, the result of {@link async},
  * or an injected function created via {@link inject}.
  *
- * Wrapper around Mocha it function. See http://jasmine.github.io/ for more details.
+ * Wrapper around Mocha it function.
  */
-export function it(name: string, fn: FunctionWithParamTokens | AnyTestFn): void {
+export function it(name: string, fn: Function): void {
     return _it(mochaIt, name, fn);
 }
 
@@ -183,8 +140,8 @@ export function it(name: string, fn: FunctionWithParamTokens | AnyTestFn): void 
  * entirely. Useful for debugging or for excluding broken tests until
  * they can be fixed.
  *
- * Wrapper around Mocha xit function. See http://jasmine.github.io/ for more details.
+ * Wrapper around Mocha xit function.
  */
-export function xit(name: string, fn: FunctionWithParamTokens | AnyTestFn): void {
+export function xit(name: string, fn: Function): void {
     return _it(mochaXIt, name, fn);
 }
