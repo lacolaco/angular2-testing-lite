@@ -30,6 +30,7 @@
         "index.spec.ts",
         "../src/core/test_component_builder.ts",
         "../src/core/test_injector.ts",
+        "../src/core/zone.ts",
         "../src/mocha/testing.ts",
         "../node_modules/zone.js/dist/zone.js.d.ts",
         "../typings/mocha/mocha.d.ts",
