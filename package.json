@@ -12,7 +12,10 @@
     "tsconfig:test": "tsconfig -u test/tsconfig.json",
     "build:test": "tsc -p test && browserify -o test/bundle.spec.js test/index.spec.js",
     "prebuild:test": "npm run tsconfig:test",
-    "espower": "espower test/bundle.spec.js > test/bundle.spec.espowered.js"
+    "espower": "espower test/bundle.spec.js > test/bundle.spec.espowered.js",
+    "postversion": "npm run changelog",
+    "changelog": "node scripts/changelog.js",
+    "postchangelog": "git add -u && git commit -m 'docs(changelog): Update CHANGELOG.md'"
   },
   "repository": {
     "url": "https://github.com/laco0416/angular2-testing-lite"
@@ -26,6 +29,7 @@
   "devDependencies": {
     "angular2": "^2.0.0-beta.16",
     "browserify": "^13.0.0",
+    "conventional-changelog": "^1.1.0",
     "core-js": "^2.2.1",
     "espower-cli": "^1.0.0",
     "karma": "^0.13.22",
