@@ -68,7 +68,7 @@ describe("TestAppComponent", () => {
         })
     );
 
-    it("should has text: 'Test App'", async(() => {
+    it("should apply ngOnInit on detectChanges()", async(() => {
             return builder.createAsync(TestAppComponent).then(fixture => {
                 let el = fixture.debugElement;
                 assert(el.query(By.css("p")).nativeElement.innerHTML === "");
