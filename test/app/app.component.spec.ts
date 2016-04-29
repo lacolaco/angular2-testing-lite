@@ -52,7 +52,7 @@ describe("TestAppComponent", () => {
     }));
 
     it("can create", async(() => {
-            return builder.createAsync(TestAppComponent)
+            builder.createAsync(TestAppComponent)
                 .then(fixture => {
                     assert(!!fixture);
                 });
@@ -60,7 +60,7 @@ describe("TestAppComponent", () => {
     );
 
     it("should has text: 'Test App'", async(() => {
-            return builder.createAsync(TestAppComponent)
+            builder.createAsync(TestAppComponent)
                 .then(fixture => {
                     let el = fixture.debugElement;
                     assert(el.query(By.css("h1")).nativeElement.innerHTML === "Test App");
@@ -69,7 +69,7 @@ describe("TestAppComponent", () => {
     );
 
     it("should apply ngOnInit on detectChanges()", async(() => {
-            return builder.createAsync(TestAppComponent).then(fixture => {
+            builder.createAsync(TestAppComponent).then(fixture => {
                 let el = fixture.debugElement;
                 assert(el.query(By.css("p")).nativeElement.innerHTML === "");
                 fixture.detectChanges();

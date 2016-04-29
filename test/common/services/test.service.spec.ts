@@ -57,7 +57,7 @@ describe("TestService", () => {
 
         it("should return mocked TestModel", async(inject([TestService],
             (service: TestService) => {
-                return service.get("test").toPromise()
+                service.get("test").toPromise()
                     .then(resp => {
                         assert(!!resp);
                         assert(resp.text === "mocked!");

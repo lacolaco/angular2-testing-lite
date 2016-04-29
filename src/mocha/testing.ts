@@ -92,23 +92,6 @@ function _wrapTestFn(fn: Function) {
     }
   };
 }
-//
-// function runInAsyncTestZone(fnToExecute: Function, finishCallback: Function, failCallback: Function,
-//                             testName = ""): any {
-//     const AsyncTestZoneSpec = (<any>Zone)["AsyncTestZoneSpec"];
-//     const testZoneSpec = new AsyncTestZoneSpec(finishCallback, failCallback, testName);
-//     testZoneSpec.onHandleError = (parentZoneDelegate: ZoneDelegate, currentZone: Zone, targetZone: Zone, error: any) => {
-//         const result = parentZoneDelegate.handleError(targetZone, error);
-//         if (result) {
-//             testZoneSpec._failCallback(error);
-//             testZoneSpec._alreadyErrored = true;
-//             return true;
-//         }
-//         return false;
-//     };
-//     const testZone = Zone.current.fork(testZoneSpec);
-//     return testZone.runGuarded(fnToExecute);
-// }
 
 function _it(mochaFn: Function, name: string, testFn: Function): void {
     mochaFn(name, _wrapTestFn(testFn));

@@ -20,9 +20,9 @@
     "files": [
         "core.ts",
         "mocha.ts",
+        "src/core/async.ts",
         "src/core/test_component_builder.ts",
         "src/core/test_injector.ts",
-        "src/core/zone.ts",
         "src/mocha/testing.ts",
         "typings/mocha/mocha.d.ts",
         "node_modules/zone.js/dist/zone.js.d.ts",
