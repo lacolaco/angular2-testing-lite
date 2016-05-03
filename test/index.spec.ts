@@ -4,8 +4,9 @@
 import "core-js/shim";
 
 // ng2 deps
-import "reflect-metadata";
-import "rxjs/Rx";
+// import "reflect-metadata";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/toPromise";
 import "zone.js/dist/zone";
 import "zone.js/dist/long-stack-trace-zone";
 import "zone.js/dist/async-test";
@@ -20,7 +21,13 @@ import {
     resetBaseTestProviders,
 } from "../core";
 
-import {TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS} from "angular2/platform/testing/browser";
+import {
+    BROWSER_APP_DYNAMIC_PROVIDERS
+} from "@angular/platform-browser-dynamic";
+import {
+    TEST_BROWSER_STATIC_PLATFORM_PROVIDERS,
+    ADDITIONAL_TEST_BROWSER_PROVIDERS,
+} from "@angular/platform-browser/testing/browser_static";
 
 resetBaseTestProviders();
-setBaseTestProviders(TEST_BROWSER_PLATFORM_PROVIDERS, TEST_BROWSER_APPLICATION_PROVIDERS);
+setBaseTestProviders(TEST_BROWSER_STATIC_PLATFORM_PROVIDERS, [BROWSER_APP_DYNAMIC_PROVIDERS, ADDITIONAL_TEST_BROWSER_PROVIDERS]);

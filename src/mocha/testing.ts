@@ -3,7 +3,7 @@
  * Original: https://github.com/angular/angular/blob/master/modules/angular2/src/testing/testing.ts
  */
 
-import {global, isPromise} from "angular2/src/facade/lang";
+import {global, isPromise} from "@angular/core/src/facade/lang";
 import {getTestInjector, TestInjector} from "../core/test_injector";
 
 const _global = <any>(typeof window === "undefined" ? global : window);

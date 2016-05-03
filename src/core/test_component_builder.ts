@@ -1,2 +1,2 @@
 // NOTE: not public
-export * from "angular2/src/testing/test_component_builder";
+export * from "@angular/compiler/testing/test_component_builder";

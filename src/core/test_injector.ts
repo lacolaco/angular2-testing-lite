@@ -7,7 +7,7 @@ export {
     setBaseTestProviders,
     resetBaseTestProviders,
     withProviders
-} from "angular2/src/testing/test_injector";
+} from "@angular/core/testing/test_injector";
 
 // Zone patched async
 export {async} from "./async";

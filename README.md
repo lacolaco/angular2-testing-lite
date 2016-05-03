@@ -77,7 +77,7 @@ Ported `TestComponentBuilder`
 import assert = require("power-assert");
 import {inject, async, TestComponentBuilder} from "angular2-testing-lite/core";
 import {describe, it, xit, beforeEachProviders, beforeEach} from "angular2-testing-lite/mocha";
-import {HTTP_PROVIDERS} from "angular2/http";
+import {HTTP_PROVIDERS} from "@angular/http";
 
 describe("TestAppComponent", () => {
 

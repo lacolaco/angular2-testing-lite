@@ -1,4 +1,4 @@
-import {Component, provide} from "angular2/core";
+import {Component, provide} from "@angular/core";
 import {TestService} from "../common/services/test.service.spec";
 import {TestModel} from "../common/models/test.model.spec";
 
@@ -32,8 +32,9 @@ export class TestAppComponent {
 import assert = require("power-assert");
 import {inject, async, TestComponentBuilder} from "../../core";
 import {describe, it, xit, beforeEach} from "../../mocha";
-import {By} from "angular2/platform/browser";
+import {By} from "@angular/platform-browser";
 import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/of";
 
 class MockTestService {
 
