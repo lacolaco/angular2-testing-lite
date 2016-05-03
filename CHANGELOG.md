@@ -1,3 +1,13 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/laco0416/angular2-testing-lite/compare/v1.3.4...v1.4.0) (2016-05-03)
+
+
+### Features
+
+* **core:** update for rc.0([2cbc3b8](https://github.com/laco0416/angular2-testing-lite/commit/2cbc3b8))
+
+
+
 <a name="1.3.4"></a>
 ## [1.3.4](https://github.com/laco0416/angular2-testing-lite/compare/v1.3.3...v1.3.4) (2016-04-29)
 
