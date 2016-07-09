@@ -4,7 +4,9 @@
 
 # OBSOLUTED
 Since RC.4, Angular 2 no longer depends on Jasmine API.
-**Please use official testing APIs.**
+**Please use official testing APIs. :)**
+
+----
 
 Jasmine-free Angular 2 Testing Library
 
