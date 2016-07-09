@@ -2,6 +2,10 @@
 [![Circle CI](https://circleci.com/gh/laco0416/angular2-testing-lite/tree/master.svg?style=svg)](https://circleci.com/gh/laco0416/angular2-testing-lite/tree/master)
 [![npm version](https://badge.fury.io/js/angular2-testing-lite.svg)](https://badge.fury.io/js/angular2-testing-lite)
 
+# OBSOLUTED
+Since RC.4, Angular 2 no longer depends on Jasmine API.
+**Please use official testing APIs.**
+
 Jasmine-free Angular 2 Testing Library
 
 ## Features
